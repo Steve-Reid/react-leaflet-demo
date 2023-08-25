@@ -1,5 +1,5 @@
 import L from "leaflet";
-import { Marker, Popup } from "react-leaflet";
+import { LayersControl, Marker, Popup } from "react-leaflet";
 import booleanPointInPolygon from "@turf/boolean-point-in-polygon";
 
 import { defaultIcon } from "../icons/defaultIcon";
@@ -19,7 +19,8 @@ export const MarkerLayer = ({
     const { coordinates } = radiusFilter.feature.geometry;
     centerPoint = L.latLng(coordinates[1], coordinates[0]);
   }
-  return data.features
+
+  const layer = data.features
     .filter((currentFeature) => {
       let filterByRadius;
       let filterByGeo;
@@ -65,4 +66,10 @@ export const MarkerLayer = ({
         </Marker>
       );
     });
+
+  return (
+    <LayersControl.Overlay checked name="World Cities">
+      {layer}
+    </LayersControl.Overlay>
+  );
 };
