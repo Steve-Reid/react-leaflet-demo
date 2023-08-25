@@ -26,6 +26,7 @@ function Map() {
         data={cities}
         setRadiusFilter={setRadiusFilter}
         getRadiusFilter={getRadiusFilter}
+        getGeoFilter={getGeoFilter}
       />
       <MarkerLayerWithTooltip data={mountains} />
       <RadiusFilter
