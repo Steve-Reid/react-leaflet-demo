@@ -1,30 +1,57 @@
-import ReactDOM from "react-dom";
+import ReactDOM from "react-dom/client";
 import { Button } from "antd";
-import { BorderOuterOutlined } from "@ant-design/icons";
+import { BorderInnerOutlined, BorderOuterOutlined } from "@ant-design/icons";
 
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { createControlComponent } from "@react-leaflet/core";
 import { Control, DomUtil } from "leaflet";
 
 const node = DomUtil.create("div");
+const root = ReactDOM.createRoot(node);
 
 Control.FitBoundsToDataControl = Control.extend({
   options: {
     position: "topleft",
   },
   onAdd(map) {
-    // eslint-disable-next-line react/no-deprecated
-    ReactDOM.render(
-      <Button
-        title="Fit bounds to wprld"
-        icon={<BorderOuterOutlined />}
-        onClick={() => map.fitWorld()}
-      />,
+    const doFitDataToBounds = () => {
+      const latLngs = [];
+      map.eachLayer((layer) => {
+        const latLng = layer.options.doFitToBounds && layer.getLatLng();
+
+        if (latLng) {
+          latLngs.push(latLng);
+        }
+      });
+      map.fitBounds(latLngs);
+    };
+
+    const commonProps = {
+      className: "leaflet-control-layers",
+      style: { width: "33px", height: "33px" },
+    };
+
+    root.render(
+      <div className="fit-bounds-control-container">
+        <Button
+          {...commonProps}
+          title="Fit bounds to data"
+          icon={<BorderInnerOutlined />}
+          onClick={() => doFitDataToBounds()}
+        />
+        <Button
+          {...commonProps}
+          title="Fit bounds to world"
+          icon={<BorderOuterOutlined />}
+          onClick={() => map.fitWorld()}
+        />
+      </div>,
     );
     return node;
   },
-  onRemove(map) {
-    console.log("🚀 ~ onRemove ~ map:", map);
+  // eslint-disable-next-line func-names, object-shorthand
+  onRemove: function (map) {
+    root.unmount();
   },
 });
 
