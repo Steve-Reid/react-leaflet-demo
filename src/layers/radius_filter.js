@@ -20,6 +20,7 @@ export const RadiusFilter = ({ radiusFilter, setRadiusFilter }) => {
         fillOpacity={0.4}
       />
     );
+
     return (
       <LayersControl.Overlay checked name="Radius Filter">
         {layer}

@@ -1,9 +1,15 @@
-import { Marker, Tooltip, useMap } from "react-leaflet";
+import {
+  LayerGroup,
+  LayersControl,
+  Marker,
+  Tooltip,
+  useMap,
+} from "react-leaflet";
 import { mountainIcon } from "../icons/mountainIcon";
 
 export const MarkerLayerWithTooltip = ({ data }) => {
   const leafletMap = useMap();
-  return data.features.map((feature) => {
+  const layer = data.features.map((feature) => {
     const { coordinates } = feature.geometry;
     const { name, continent, elevation } = feature.properties;
 
@@ -24,4 +30,10 @@ export const MarkerLayerWithTooltip = ({ data }) => {
       </Marker>
     );
   });
+
+  return (
+    <LayersControl.Overlay checked name="Highest points">
+      <LayerGroup>{layer}</LayerGroup>
+    </LayersControl.Overlay>
+  );
 };

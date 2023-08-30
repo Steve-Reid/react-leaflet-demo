@@ -1,5 +1,5 @@
 import L from "leaflet";
-import { LayersControl, Marker, Popup } from "react-leaflet";
+import { LayerGroup, LayersControl, Marker, Popup } from "react-leaflet";
 import booleanPointInPolygon from "@turf/boolean-point-in-polygon";
 
 import { defaultIcon } from "../icons/defaultIcon";
@@ -68,8 +68,8 @@ export const MarkerLayer = ({
     });
 
   return (
-    <LayersControl.Overlay checked name="World Cities">
-      {layer}
+    <LayersControl.Overlay checked name="World cities">
+      <LayerGroup>{layer}</LayerGroup>
     </LayersControl.Overlay>
   );
 };
