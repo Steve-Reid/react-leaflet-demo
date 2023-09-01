@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { LayersControl, MapContainer, TileLayer } from "react-leaflet";
 
 import { cities } from "../data/cities";
@@ -18,6 +18,22 @@ function Map() {
   const [radiusFilter, setRadiusFilter] = useState(null);
   const getRadiusFilter = () => radiusFilter;
 
+  const [asyncCities, setAsyncCities] = useState({ features: [] });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await fetch(
+        "https://d2ad6b4ur7yvpq.cloudfront.net/naturalearth-3.3.0/ne_110m_populated_places_simple.geojson",
+      );
+      const citiesData = await response.json();
+      setAsyncCities(citiesData);
+    };
+
+    fetchData().catch(console.error);
+  }, []);
+
+  console.log("🚀 ~ file: Map.js:22 ~ Map ~ asyncCities:", asyncCities);
+
   return (
     <MapContainer center={[0, 0]} zoom={3} scrollWheelZoom>
       <LayersControl position="topright">
@@ -27,8 +43,15 @@ function Map() {
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
         </LayersControl.BaseLayer>
+        <LayersControl.BaseLayer name="ESRI World Imagery">
+          <TileLayer
+            url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+            attribution="Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community"
+          />
+        </LayersControl.BaseLayer>
         <MarkerLayer
-          data={cities}
+          // data={cities}
+          data={asyncCities}
           setRadiusFilter={setRadiusFilter}
           getRadiusFilter={getRadiusFilter}
           getGeoFilter={getGeoFilter}
