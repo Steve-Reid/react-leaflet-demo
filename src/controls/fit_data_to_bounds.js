@@ -23,7 +23,10 @@ Control.FitBoundsToDataControl = Control.extend({
           latLngs.push(latLng);
         }
       });
-      map.fitBounds(latLngs);
+
+      if (latLngs.length > 0) {
+        map.fitBounds(latLngs);
+      }
     };
 
     const commonProps = {
@@ -50,9 +53,7 @@ Control.FitBoundsToDataControl = Control.extend({
     return node;
   },
   // eslint-disable-next-line func-names, object-shorthand
-  onRemove: function (map) {
-    root.unmount();
-  },
+  onRemove: function () {},
 });
 
 export const FitBoundsToDataControl = createControlComponent(

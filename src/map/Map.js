@@ -10,6 +10,7 @@ import { MarkerLayerWithTooltip } from "../layers/marker_layer_with_tooltip";
 import { RadiusFilter } from "../layers/radius_filter";
 import { ContinentPolygonLayer } from "../layers/continent_poloygon_layer";
 import { FitBoundsToDataControl } from "../controls/fit_data_to_bounds";
+import { ShowActiveFiltersControl } from "../controls/show_active_filters";
 
 function Map() {
   const [geoFilter, setGeoFilter] = useState(null);
@@ -44,6 +45,9 @@ function Map() {
         />
       </LayersControl>
       <FitBoundsToDataControl />
+      <ShowActiveFiltersControl
+        getFilters={() => ({ geoFilter, radiusFilter })}
+      />
     </MapContainer>
   );
 }
