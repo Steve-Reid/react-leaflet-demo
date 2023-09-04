@@ -2,11 +2,14 @@ import { useEffect, useState } from "react";
 import { LayersControl, MapContainer, TileLayer } from "react-leaflet";
 
 import { cities } from "../data/cities";
+import { irishCities2157 } from "../data/irish_cities_2157";
 import { mountains } from "../data/highest_points";
 import { continents } from "../data/continents";
 
 import { MarkerLayer } from "../layers/marker_layer";
 import { MarkerLayerWithTooltip } from "../layers/marker_layer_with_tooltip";
+import { MarkerLayerWithTooltipCluster } from "../layers/marker_layer_with_tooltip_cluster";
+import { MarkerLayerWithTooltipReproject } from "../layers/marker_layer_with_tooltip_reproject";
 import { RadiusFilter } from "../layers/radius_filter";
 import { ContinentPolygonLayer } from "../layers/continent_poloygon_layer";
 import { FitBoundsToDataControl } from "../controls/fit_data_to_bounds";
@@ -32,8 +35,6 @@ function Map() {
     fetchData().catch(console.error);
   }, []);
 
-  console.log("🚀 ~ file: Map.js:22 ~ Map ~ asyncCities:", asyncCities);
-
   return (
     <MapContainer center={[0, 0]} zoom={3} scrollWheelZoom>
       <LayersControl position="topright">
@@ -57,6 +58,8 @@ function Map() {
           getGeoFilter={getGeoFilter}
         />
         <MarkerLayerWithTooltip data={mountains} />
+        <MarkerLayerWithTooltipCluster data={cities} />
+        <MarkerLayerWithTooltipReproject data={irishCities2157} />
         <RadiusFilter
           radiusFilter={radiusFilter}
           setRadiusFilter={setRadiusFilter}
